@@ -1,6 +1,6 @@
 // Artisan-Corner
 // EBlHbePDDn9Kqaf5
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const express = require("express");
 const app = express();
 const port = (process.env.PORT = 3000);
@@ -39,6 +39,13 @@ async function run() {
     app.get("/artisans", async (req, res) => {
       const getArtisans = artisanCollection.find();
       const result = await getArtisans.toArray();
+      res.send(result);
+    });
+
+    app.get("/artisans/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await artisanCollection.findOne(query);
       res.send(result);
     });
 
