@@ -49,6 +49,20 @@ async function run() {
       res.send(result);
     });
 
+    app.delete("/artisans/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await artisanCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    app.get("/artisans_email/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { NewEmail: email };
+      const result = await artisanCollection.find(query).toArray();
+      res.send(result);
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
