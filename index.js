@@ -56,6 +56,32 @@ async function run() {
       res.send(result);
     });
 
+    app.put("/artisans/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateArtisan = req.body;
+      const artisans = {
+        $set: {
+          itemName: updateArtisan.itemName,
+          imageURL: updateArtisan.imageURL,
+          subcategory_name: updateArtisan.subcategory_name,
+          description: updateArtisan.description,
+          rating: updateArtisan.rating,
+          price: updateArtisan.price,
+          Processing_Time: updateArtisan.Processing_Time,
+          customization: updateArtisan.customization,
+          stockStatus: updateArtisan.stockStatus,
+        },
+      };
+      const result = await artisanCollection.updateOne(
+        filter,
+        artisans,
+        options
+      );
+      res.send(result);
+    });
+
     app.get("/artisans_email/:email", async (req, res) => {
       const email = req.params.email;
       const query = { NewEmail: email };
