@@ -29,10 +29,19 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     const artisanCollection = client.db("artisansDB").collection("artisans");
+    const categoryCollection = client
+      .db("artisansDB")
+      .collection("category_collection");
 
     app.post("/artisans", async (req, res) => {
       const addArtist = req.body;
       const result = await artisanCollection.insertOne(addArtist);
+      res.send(result);
+    });
+
+    app.get("/category_collection", async (req, res) => {
+      const getArtisans = categoryCollection.find();
+      const result = await getArtisans.toArray();
       res.send(result);
     });
 
@@ -85,6 +94,13 @@ async function run() {
     app.get("/artisans_email/:email", async (req, res) => {
       const email = req.params.email;
       const query = { NewEmail: email };
+      const result = await artisanCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    app.get("/categoryCollection/:subcategory_name", async (req, res) => {
+      const category = req.params.subcategory_name;
+      const query = { subcategory_name: category };
       const result = await artisanCollection.find(query).toArray();
       res.send(result);
     });
