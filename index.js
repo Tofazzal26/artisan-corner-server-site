@@ -1,19 +1,14 @@
-// Artisan-Corner
-// EBlHbePDDn9Kqaf5
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const express = require("express");
 const app = express();
 const port = (process.env.PORT = 3000);
 var cors = require("cors");
-
+require("dotenv").config();
 // middleware
 app.use(cors());
 app.use(express.json());
 
-const uri =
-  "mongodb+srv://Artisan-Corner:EBlHbePDDn9Kqaf5@cluster0.rgxjhma.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-// const uri =
-//   "mongodb+srv://<username>:<password>@cluster0.rgxjhma.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.rgxjhma.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -94,6 +89,13 @@ async function run() {
     app.get("/artisans_email/:email", async (req, res) => {
       const email = req.params.email;
       const query = { NewEmail: email };
+      const result = await artisanCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    app.get("/artisans_yes/:yes", async (req, res) => {
+      const ctYes = req.params.yes;
+      const query = { customization: ctYes };
       const result = await artisanCollection.find(query).toArray();
       res.send(result);
     });
