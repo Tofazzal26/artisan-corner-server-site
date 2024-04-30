@@ -9,7 +9,7 @@ var cors = require("cors");
 app.use(cors());
 app.use(
   cors({
-    origin: ["http://localhost:5173/", "https://artisan-corner-832b4.web.app/"],
+    origin: ["http://localhost:5173", "https://artisan-corner-832b4.web.app"],
     credentials: true,
   })
 );
